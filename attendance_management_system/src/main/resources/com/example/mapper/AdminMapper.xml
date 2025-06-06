@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.AdminMapper">
+
+    <!-- getRecords -->
+    <select id="getRecords"> select * from check_record <where>
+            <if test="name != null"> emp_id=(select id from emp where name = #{name}) </if>
+        </where>
+    </select>
+
+    <!-- getSummary -->
+
+    <select id="getSummary"> WITH work_days AS ( SELECT date_value FROM calendar WHERE date_value
+        BETWEEN #{firstDay} AND #{lastDay} AND is_workday = 1 ), emp_days AS ( SELECT e.id AS
+        emp_id, e.name, w.date_value FROM emp e CROSS JOIN work_days w WHERE e.role = 0 ),
+        leave_data AS ( SELECT ed.emp_id, ed.date_value, MAX(l.status) AS leave_approved FROM
+        emp_days ed LEFT JOIN leave_record l ON ed.emp_id = l.emp_id AND ed.date_value = l.date AND
+        l.status = 1 GROUP BY ed.emp_id, ed.date_value ), check_data AS ( SELECT ed.emp_id,
+        ed.date_value, MIN(cr.check_in_time) AS check_in, MAX(cr.check_out_time) AS check_out FROM
+        emp_days ed LEFT JOIN check_record cr ON ed.emp_id = cr.emp_id AND DATE(cr.check_in_time) =
+        ed.date_value GROUP BY ed.emp_id, ed.date_value ), daily_status AS ( SELECT ed.emp_id,
+        ed.name, ed.date_value, CASE WHEN ld.leave_approved = 1 THEN '请假' WHEN cd.check_in IS NULL
+        AND cd.check_out IS NULL THEN '缺勤' WHEN cd.check_in IS NOT NULL AND cd.check_out IS NULL
+        THEN '缺卡（下班）' WHEN cd.check_in IS NULL AND cd.check_out IS NOT NULL THEN '缺卡（上班）' WHEN
+        TIME(cd.check_in) &gt; '09:00:00' AND TIME(cd.check_out) &lt; '18:00:00' THEN '迟到+早退' WHEN
+        TIME(cd.check_in) &gt; '09:00:00' THEN '迟到' WHEN TIME(cd.check_out) &lt; '18:00:00' THEN
+        '早退' ELSE '正常' END AS status FROM emp_days ed LEFT JOIN leave_data ld ON ed.emp_id =
+        ld.emp_id AND ed.date_value = ld.date_value LEFT JOIN check_data cd ON ed.emp_id = cd.emp_id
+        AND ed.date_value = cd.date_value ) SELECT emp_id, name, COUNT(*) AS work_days_total,
+        SUM(CASE status WHEN '正常' THEN 1 ELSE 0 END) AS normal_days, SUM(CASE status WHEN '迟到' THEN
+        1 ELSE 0 END) AS late_days, SUM(CASE status WHEN '早退' THEN 1 ELSE 0 END) AS early_days,
+        SUM(CASE status WHEN '迟到+早退' THEN 1 ELSE 0 END) AS late_early_days, SUM(CASE WHEN status
+        LIKE '缺卡%' THEN 1 ELSE 0 END) AS incomplete_days, SUM(CASE status WHEN '缺勤' THEN 1 ELSE 0
+        END) AS absent_days, SUM(CASE status WHEN '请假' THEN 1 ELSE 0 END) AS leave_days FROM
+        daily_status GROUP BY emp_id, name ORDER BY emp_id </select>
+
+    <!-- updateEmp --> 
+
+    <update id="updateEmp">
+        update emp <set>
+            <if test="name != null"> name = #{name}, </if>
+            <if test="gender != null"> gender = #{gender}, </if>
+            <if test="age != null"> age = #{age}, </if>
+            <if test="password != null"> password = #{password}, </if>
+        </set>
+            where id = #{id}
+    </update></mapper>

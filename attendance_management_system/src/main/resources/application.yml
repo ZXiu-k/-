@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: attendance_management_system
+  # servlet:
+  #   multipart:
+  #     file-size-threshold:
+  #     max-file-size:
+
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/attendance_management_system
+    username: root
+    password: 1234
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    # 开启事务管理日志
+    "[org.springframework.transaction]": debug
+# server:
+#   port: 7070
