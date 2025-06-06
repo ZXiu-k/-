@@ -8,39 +8,39 @@
 
 ##### 登录页面
 
-![1](C:\Users\ZXiu\Pictures\考勤管理系统\1.png)
+![1](https://github.com/ZXiu-k/attendance_management_system/blob/main/img/1.png)
 
 ##### 员工页面
 
 个人信息
 
-![2](C:\Users\ZXiu\Pictures\考勤管理系统\2.png)
+![2](https://github.com/ZXiu-k/attendance_management_system/blob/main/img/2.png)
 
 签到页面
 
-![3](C:\Users\ZXiu\Pictures\考勤管理系统\3.png)
+![3](https://github.com/ZXiu-k/attendance_management_system/blob/main/img/3.png)
 
 请假页面
 
-![4](C:\Users\ZXiu\Pictures\考勤管理系统\4.png)
+![4](https://github.com/ZXiu-k/attendance_management_system/blob/main/img/4.png)
 
 ##### 管理员页面
 
 员工管理
 
-![5](C:\Users\ZXiu\Pictures\考勤管理系统\5.png)
+![5](https://github.com/ZXiu-k/attendance_management_system/blob/main/img/5.png)
 
 考勤记录查看
 
-![6](C:\Users\ZXiu\Pictures\考勤管理系统\6.png)
+![6](https://github.com/ZXiu-k/attendance_management_system/blob/main/img/6.png)
 
 请假审批
 
-![7](C:\Users\ZXiu\Pictures\考勤管理系统\7.png)
+![7](https://github.com/ZXiu-k/attendance_management_system/blob/main/img/7.png)
 
 每月考勤总结
 
-![8](C:\Users\ZXiu\Pictures\考勤管理系统\8.png)
+![8](https://github.com/ZXiu-k/attendance_management_system/blob/main/img/8.png)
 
 ### 使用方法
 
@@ -68,4 +68,4 @@
 java -jar .\attendance-0.0.1-SNAPSHOT.jar --spring.datasource.username=填你的用户名 --spring.datasource.passeword=填你的密码
 ```
 
-`disk` 和 `attendance-0.0.1-SNAPSHOT.jar` 可在 release 中下载
+`disk` 和 `attendance-0.0.1-SNAPSHOT.jar` 可在 [release](https://github.com/ZXiu-k/attendance_management_system/releases) 中下载
